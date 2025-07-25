@@ -50,13 +50,6 @@ const PageTransition = ({ children }: PageTransitionProps) => {
       </AnimatePresence>
       
       {/* Decorative animated elements */}
-      <motion.div
-        className="fixed top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-accent to-primary z-50"
-        initial={{ scaleX: 0, transformOrigin: 'left' }}
-        animate={{ scaleX: 1 }}
-        exit={{ scaleX: 0, transformOrigin: 'right' }}
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
-      />
     </div>
   );
 };
