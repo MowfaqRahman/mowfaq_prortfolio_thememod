@@ -6,7 +6,7 @@ import ParticleBackground from '@/components/ParticleBackground';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import emailjs from 'emailjs-com';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 const Home = () => {
   const containerVariants = {
@@ -54,22 +54,10 @@ const Home = () => {
       description: ' A blog management system built using React and Firebase with full  functionality.',
       link: '#',
     },
-    {
-      title: 'Weather Dashboard',
-      description: 'A dashboard to display weather data from an API.',
-      link: '#',
-    },
-    {
-      title: 'Finance Tracker',
-      description: 'An app to track expenses and visualize spending.',
-      link: '#',
-    },
+    
   ];
 
-  function getRandomProjects(arr, n) {
-    const shuffled = arr.slice().sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, n);
-  }
+
 
   const skills = [
     {
@@ -94,6 +82,17 @@ const Home = () => {
   ];
 
   const form = useRef(null);
+  const [heroProjects, setHeroProjects] = useState([]);
+
+  function getRandomProjects(arr, n) {
+    const shuffled = arr.slice().sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, n);
+  }
+
+  // Set random projects for hero section on component mount
+  useEffect(() => {
+    setHeroProjects(getRandomProjects(projects, 3));
+  }, []);
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -180,7 +179,7 @@ const Home = () => {
               >
                 <a href="/Mowfaq's resume.pdf" download>
                   <Download className="mr-2 w-5 h-5" />
-                  Download CV
+                  Download Resume
                 </a>
               </Button>
             </motion.div>
@@ -190,20 +189,104 @@ const Home = () => {
               className="flex items-center space-x-6 pt-8"
             >
               <div className="flex -space-x-2">
-                {[1, 2, 3].map((i) => (
+                {heroProjects.map((project, i) => {
+                  // Define project-specific images and colors
+                  const projectConfig = {
+                    'Attendance System Using Face Recognition': {
+                      images: [
+                        "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=100&h=100&fit=crop&crop=center"
+                      ],
+                      color: "from-primary to-accent"
+                    },
+                    'Happy Paw Adoption Services': {
+                      images: [
+                        "https://images.unsplash.com/photo-1587764379873-97837921fd44?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=100&h=100&fit=crop&crop=center"
+                      ],
+                      color: "from-accent to-primary"
+                    },
+                    'Pill Reminder App': {
+                      images: [
+                        "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=100&h=100&fit=crop&crop=center"
+                      ],
+                      color: "from-green-500 to-blue-500"
+                    },
+                    'Money Management App': {
+                      images: [
+                        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=100&h=100&fit=crop&crop=center"
+                      ],
+                      color: "from-primary/50 to-accent/50"
+                    },
+                    'Blog Post App': {
+                      images: [
+                        "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=100&h=100&fit=crop&crop=center",
+                        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=100&h=100&fit=crop&crop=center"
+                      ],
+                      color: "from-purple-500 to-pink-500"
+                    }
+                  };
+
+                  const config = projectConfig[project.title] || {
+                    images: [
+                      "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=100&h=100&fit=crop&crop=center"
+                    ],
+                    color: "from-primary to-accent"
+                  };
+
+                  return (
                   <motion.div
-                    key={i}
-                    className={`w-12 h-12 rounded-full border-2 border-primary bg-gradient-to-r ${
-                      i === 1 ? 'from-primary to-accent' :
-                      i === 2 ? 'from-accent to-primary' :
-                      'from-primary/50 to-accent/50'
+                    key={project.title}
+                    className={`w-12 h-12 rounded-full overflow-hidden cursor-pointer relative bg-gradient-to-r ${
+                      config.color
                     }`}
                     whileHover={{ scale: 1.1, zIndex: 10 }}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: i * 0.1 }}
-                  />
-                ))}
+                    onClick={() => {
+                      const section = document.getElementById('projects-section');
+                      if (section) {
+                        section.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    title={i === 2 ? "Other Projects - Click to view all projects" : `${project.title} - Click to view projects`}
+                  >
+                    {i === 2 ? (
+                      // Third project - "+" logo
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500">
+                        <span className="text-white text-2xl font-bold">+</span>
+                      </div>
+                    ) : (
+                      // First and second projects - animated images
+                      config.images.map((image, imgIndex) => (
+                        <motion.img 
+                          key={imgIndex}
+                          src={image} 
+                          alt={`${project.title} ${imgIndex + 1}`}
+                          className="w-full h-full object-cover absolute inset-0"
+                          animate={{ 
+                            opacity: [0, 1, 1, 0],
+                          }}
+                          transition={{ 
+                            duration: 6,
+                            repeat: Infinity,
+                            delay: imgIndex * 2 + i * 0.5,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      ))
+                    )}
+                  </motion.div>
+                );
+                })}
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">5+ Projects Completed</p>
@@ -372,10 +455,8 @@ const Home = () => {
               <div>
                 <div className="font-semibold mb-2">Social Media</div>
                 <div className="flex gap-4">
-                  <a href="#" className="w-10 h-10 rounded-full bg-background flex items-center justify-center hover:bg-primary/20 transition"><i className="fa-brands fa-facebook-f"></i></a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-background flex items-center justify-center hover:bg-primary/20 transition"><i className="fa-brands fa-twitter"></i></a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-background flex items-center justify-center hover:bg-primary/20 transition"><i className="fa-brands fa-instagram"></i></a>
-                  <a href="#" className="w-10 h-10 rounded-full bg-background flex items-center justify-center hover:bg-primary/20 transition"><i className="fa-brands fa-github"></i></a>
+                  <a href="https://www.linkedin.com/in/mowfaq-rahman-120470254/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-background flex items-center justify-center hover:bg-primary/20 transition"><i className="fa-brands fa-linkedin"></i></a>
+                  <a href="https://github.com/MowfaqRahman" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-background flex items-center justify-center hover:bg-primary/20 transition"><i className="fa-brands fa-github"></i></a>
                 </div>
               </div>
             </div>

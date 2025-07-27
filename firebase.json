@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "mowfaqportfolio2-a011c",
     "public": "dist",
     "ignore": [
       "firebase.json",

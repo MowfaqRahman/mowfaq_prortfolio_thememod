@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Palette } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { currentTheme, cycleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -150,16 +152,38 @@ const Navigation = () => {
                   </Link>
                 </motion.div>
               ))}
+              
+              {/* Theme Toggle Button */}
+              <motion.button
+                variants={itemVariants}
+                onClick={cycleTheme}
+                className="p-2 rounded-full bg-background/20 border border-primary/30 hover:bg-primary/10 transition-all duration-300 hover:scale-110"
+                title={`Current: ${currentTheme}. Click to cycle themes`}
+              >
+                <Palette className="w-5 h-5 text-purple-400" />
+              </motion.button>
             </div>
 
             {/* Mobile Menu Button */}
-            <motion.button
-              variants={itemVariants}
-              className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </motion.button>
+            <div className="md:hidden flex items-center space-x-2">
+              {/* Theme Toggle Button for Mobile */}
+              <motion.button
+                variants={itemVariants}
+                onClick={cycleTheme}
+                className="p-2 rounded-full bg-background/20 border border-primary/30 hover:bg-primary/10 transition-all duration-300"
+                title={`Current: ${currentTheme}. Click to cycle themes`}
+              >
+                <Palette className="w-4 h-4 text-purple-400" />
+              </motion.button>
+              
+              <motion.button
+                variants={itemVariants}
+                className="p-2 text-foreground hover:text-primary transition-colors"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </motion.button>
+            </div>
           </div>
         </div>
       </motion.nav>
