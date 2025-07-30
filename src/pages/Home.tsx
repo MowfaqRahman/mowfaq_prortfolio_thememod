@@ -137,7 +137,7 @@ const Home = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, delay: 0.2 }}
               >
-                Mowfaq Rahman
+                Mowfaq mfq
                 <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Creative Developer
                 </span>
